@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User History</title>
+    <!-- <link rel="stylesheet" href="./land.css"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+    <!-- //firestore -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+</head>
+<body style="background-color: rgb(238, 147, 72);" class="text-center">
+  <nav class="navbar navbar-light bg-light">
+    <div class="container-fluid ms-5">
+      <a class="navbar-brand"><img src="../landingPage/images/logo.png" width="150" height="100" alt=""></a>
+      <div class="h2 text-warning">Food<span class="text-black">Delievry</span></div>  
+      <div class="">
+          <p class="h3"> Welcome <span id='username'></span></p>
+        <!-- <div class="btn btn-warning"><a href="../resturantSignup/resturantSignup.html" class="nav-link">Register Your Resturant</a></div>
+        <div class="btn btn-success"><a href="../userSignup/userSignin.html" class="nav-link">Hungry? Sign-up Today</a></div> -->
+            <div class="btn btn-danger "onclick='signOut()' href="#" role="button" id="logout"  aria-expanded="false">
+              Logout
+            </div>
+        
+    </div>
+    </div>
+  </nav>
+  <div class="mt-2">
+    <a href="./userDashBoard.html">
+        <button type="button" class="btn btn-secondary">Home</button></a>
+        <a href="./userHistory.html"><button type="button" class="btn btn-primary">History</button></a>
+        </div>
+        <div class="container">
+          <h1>Welcome To Food delievry</h1>
+          <h3>We Provide Healthy and fresh food at your doorstep</h3>
+          <div class="row mt-5" id="card">
+            
+        </div>
+      </div>
+      <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+          apiKey: "AIzaSyCcAQ3ZR4FPt4VGgHyiUZBQw3FnPIEpHG8",
+          authDomain: "food-delievry-app.firebaseapp.com",
+          projectId: "food-delievry-app",
+          storageBucket: "food-delievry-app.appspot.com",
+          messagingSenderId: "43420740092",
+          appId: "1:43420740092:web:e73c2a2eda873e04f06a79"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+      </script>
+      <script>
+        firebase.auth().onAuthStateChanged((user) =>{
+    const resturantName = document.getElementById('resturantName')
+    if(user){
+        userID =user.uid;
+        firebase.firestore().collection('Resturant').doc(user.uid).get()
+        .then((snapshot)=>{
+            console.log('snapshot', snapshot)
+            console.log('snapshot data', snapshot.data())
+            console.log('snapshot data username', snapshot.data().resturantName)
+            resturantName.innerHTML = snapshot.data().resturantName
+            getTodo(userID)
+        })
+        .catch((error)=>{
+            console.error('error', error)
+        })
+    }
+    else{
+        location.href="../resturantSignup/resturantSignin.html"
+    }
+})
+      </script>
+</body>
+</html>
